@@ -23,8 +23,10 @@
 }
 
 .content {
-    max-width: 960px;
+    width: 100%;
+    max-width: 1540px;
     margin: 0 auto;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 2rem;
+    box-sizing: border-box;
 }
 </style>
