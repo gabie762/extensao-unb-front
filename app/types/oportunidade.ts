@@ -1,7 +1,6 @@
 import type { Projeto } from './projeto'
 
 export interface Oportunidade {
-  id: string
   projetoId: string
   projeto: Projeto
   titulo: string

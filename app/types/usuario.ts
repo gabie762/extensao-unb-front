@@ -3,6 +3,6 @@ export interface Usuario {
   nome: string
   email: string
   avatar?: string
-  role: 'aluno' | 'professor'
+  role: 'aluno' | 'professor' | 'admin'
   departamento?: string
 }
