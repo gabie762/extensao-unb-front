@@ -1,8 +1,6 @@
 <template>
     <div class="layout">
-        <header class="topbar">
-            <AppTopBar />
-        </header>
+        <AppTopBar />
 
         <main class="content">
             <slot />
@@ -14,12 +12,6 @@
 .layout {
     min-height: 100vh;
     background: #f8fafc;
-}
-
-.topbar {
-    background: #0f172a;
-    color: #fff;
-    border-bottom: 1px solid #1e293b;
 }
 
 .content {

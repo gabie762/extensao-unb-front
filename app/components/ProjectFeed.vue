@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import type { AreaConhecimento } from '~/types/projeto'
+
 defineProps<{
   projects: Array<{
     id: number
     title: string
-    area: string
+    area: AreaConhecimento
+    unidadeResponsavel: string
     description: string
     mentor: string
     schedule: string
@@ -37,7 +40,7 @@ defineProps<{
         </div>
 
         <div class="card-bottom">
-          <span class="mentor">Mentoria: {{ project.mentor }}</span>
+          <span class="mentor">{{ project.mentor }} · {{ project.unidadeResponsavel }}</span>
           <button class="details-button" type="button">Ver projeto</button>
         </div>
       </article>
