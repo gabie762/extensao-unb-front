@@ -32,7 +32,7 @@ defineProps<{
       <UCard
         v-for="project in projects"
         :key="project.id"
-        class="rounded-xl"
+        class="rounded-xl h-full flex flex-col"
       >
         <template #header>
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -43,9 +43,9 @@ defineProps<{
           </div>
         </template>
 
-        <div class="flex flex-col gap-3">
-          <h2 class="m-0 text-slate-900 dark:text-white text-[1.2rem] font-bold leading-snug">{{ project.title }}</h2>
-          <p class="m-0 text-slate-600 dark:text-slate-300 leading-relaxed">{{ project.description }}</p>
+        <div class="flex flex-col gap-3 flex-1">
+          <h2 class="m-0 text-slate-900 dark:text-white text-[1.2rem] font-bold leading-snug line-clamp-2 min-h-[3.25rem]">{{ project.title }}</h2>
+          <p class="m-0 text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 min-h-[4.5rem]">{{ project.description }}</p>
           <div class="flex flex-wrap gap-2 mt-1">
             <UBadge
               v-for="tag in project.tags"
@@ -60,7 +60,7 @@ defineProps<{
         </div>
 
         <template #footer>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
             <span class="text-slate-500 dark:text-slate-400 text-sm">
               {{ project.mentor }} · {{ project.unidadeResponsavel }}
             </span>
