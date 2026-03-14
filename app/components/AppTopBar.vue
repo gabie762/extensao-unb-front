@@ -1,12 +1,23 @@
+<script setup lang="ts">
+const isMobileMenuOpen = ref(false)
+const colorMode = useColorMode()
+
+const links = [
+  { label: 'Início', to: '/' },
+  { label: 'Projetos', to: '/projetos' },
+  { label: 'Oportunidades', to: '/oportunidades' }
+]
+</script>
+
 <template>
-    <header class="topbar">
-        <UContainer class="topbar-inner flex items-center justify-between gap-6 py-3">
-            <NuxtLink to="/" class="brand-link flex items-center gap-4 text-white font-bold no-underline">
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+        <UContainer class="min-h-[4.75rem] flex items-center justify-between gap-6 py-3">
+            <NuxtLink to="/" class="flex items-center gap-4 text-white font-bold no-underline text-2xl tracking-[-0.02em]">
                 <UIcon name="i-heroicons-academic-cap" class="h-10 w-10" />
                 <span>Extensão UnB</span>
             </NuxtLink>
 
-            <nav class="desktop-nav hidden md:flex items-center gap-3">
+            <nav class="hidden md:flex items-center gap-3 flex-1 justify-center">
                 <UButton
                     v-for="link in links"
                     :key="link.to"
@@ -14,7 +25,7 @@
                     variant="ghost"
                     color="neutral"
                     size="xl"
-                    class="nav-button"
+                    class="min-h-[3.25rem] px-4 text-[1.05rem] font-semibold text-white"
                 >
                     {{ link.label }}
                 </UButton>
@@ -26,25 +37,34 @@
                     variant="ghost"
                     color="neutral"
                     size="xl"
-                    class="profile-button hidden md:inline-flex"
+                    class="hidden md:inline-flex min-h-[3.5rem] min-w-[3.5rem] p-1.5"
                 >
-                    <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="profile-avatar" />
+                    <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="w-10 h-10" />
                 </UButton>
 
                 <UButton
                     variant="ghost"
                     color="neutral"
                     size="xl"
+                    :icon="colorMode.value === 'dark' ? 'i-heroicons-sun' : 'i-heroicons-moon'"
+                    :aria-label="colorMode.value === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
+                    @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+                />
+
+                <UButton
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
                     icon="i-heroicons-bars-3"
-                    class="mobile-menu-toggle md:hidden"
+                    class="md:hidden min-h-[3.5rem] min-w-[3.5rem]"
                     :aria-label="isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'"
                     @click="isMobileMenuOpen = !isMobileMenuOpen"
                 />
             </div>
         </UContainer>
 
-        <UContainer v-if="isMobileMenuOpen" class="mobile-menu-wrapper md:hidden pb-5">
-            <div class="mobile-menu">
+        <UContainer v-if="isMobileMenuOpen" class="md:hidden pb-5">
+            <div class="flex flex-col gap-3 bg-slate-900/95 border border-slate-800 rounded-2xl p-4">
                 <UButton
                     v-for="link in links"
                     :key="`mobile-${link.to}`"
@@ -53,7 +73,7 @@
                     color="neutral"
                     size="xl"
                     block
-                    class="mobile-nav-button justify-start"
+                    class="min-h-[3.5rem] justify-start font-semibold"
                     @click="isMobileMenuOpen = false"
                 >
                     {{ link.label }}
@@ -65,11 +85,11 @@
                     color="neutral"
                     size="xl"
                     block
-                    class="mobile-profile-button justify-start"
+                    class="min-h-[3.5rem] justify-start font-semibold"
                     @click="isMobileMenuOpen = false"
                 >
                     <template #leading>
-                        <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="mobile-profile-avatar" />
+                        <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="w-8 h-8" />
                     </template>
                     Perfil
                 </UButton>
@@ -77,90 +97,3 @@
         </UContainer>
     </header>
 </template>
-
-<script setup lang="ts">
-const isMobileMenuOpen = ref(false)
-
-const links = [
-  { label: 'Início', to: '/' },
-  { label: 'Projetos', to: '/projetos' },
-  { label: 'Oportunidades', to: '/oportunidades' }
-]
-</script>
-
-<style scoped>
-.topbar {
-    background: #0f172a;
-    border-bottom: 1px solid #1e293b;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
-}
-
-.topbar-inner {
-    min-height: 4.75rem;
-}
-
-.brand-link {
-    font-size: 1.5rem;
-    letter-spacing: -0.02em;
-}
-
-.desktop-nav {
-    flex: 1;
-    justify-content: center;
-}
-
-.nav-button {
-    min-height: 3.25rem;
-    padding: 0 1rem;
-}
-
-.nav-button :deep(span) {
-    font-size: 1.05rem;
-    font-weight: 600;
-}
-
-.profile-button {
-    min-height: 3.5rem;
-    min-width: 3.5rem;
-    padding: 0.375rem;
-}
-
-.profile-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-}
-
-.mobile-menu-toggle {
-    min-height: 3.5rem;
-    min-width: 3.5rem;
-}
-
-.mobile-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    background: rgba(15, 23, 42, 0.96);
-    border: 1px solid #1e293b;
-    border-radius: 1rem;
-    padding: 1rem;
-}
-
-.mobile-nav-button,
-.mobile-profile-button {
-    min-height: 3.5rem;
-}
-
-.mobile-nav-button :deep(span),
-.mobile-profile-button :deep(span) {
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.mobile-profile-avatar {
-    width: 2rem;
-    height: 2rem;
-}
-</style>
