@@ -84,6 +84,7 @@ defineProps<{
     <template #footer>
       <div class="flex items-center justify-center mt-auto pt-2">
         <UButton
+          :to="`/oportunidades/${opportunity.id}`"
           color="primary"
           variant="solid"
           size="lg"

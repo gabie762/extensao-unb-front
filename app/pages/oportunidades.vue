@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const route = useRoute()
+
 const {
     filterOptions,
     searchTerm,
@@ -8,10 +10,14 @@ const {
     formatTipo,
     formatPrazo
 } = useOportunidades()
+
+const isDetailRoute = computed(() => Boolean(route.params.id))
 </script>
 
 <template>
-    <section class="flex flex-col gap-6">
+    <NuxtPage v-if="isDetailRoute" />
+
+    <section v-else class="flex flex-col gap-6">
         <header class="grid gap-3">
             <p class="m-0 text-blue-600 text-sm font-bold tracking-wider uppercase">Oportunidades</p>
              <h1 class="m-0 text-slate-900 dark:text-white text-[clamp(2.5rem,3vw,3rem)] font-bold tracking-tight">Encontre bolsas e oportunidades de voluntariado</h1>

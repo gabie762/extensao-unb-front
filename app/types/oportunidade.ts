@@ -5,6 +5,11 @@ export interface Oportunidade {
   projeto: Projeto
   titulo: string
   descricao: string
+  sobreProjeto: string
+  objetivos: string[]
+  atividadesDesenvolvidas: string[]
+  comoParticipar: string[]
+  certificado: boolean
   requisitos: string[]
   prazoInscricao: string
   tipo: 'bolsa' | 'voluntariado'
