@@ -1,101 +1,99 @@
+<script setup lang="ts">
+const isMobileMenuOpen = ref(false)
+const colorMode = useColorMode()
+
+const links = [
+  { label: 'Início', to: '/' },
+  { label: 'Projetos', to: '/projetos' },
+  { label: 'Oportunidades', to: '/oportunidades' }
+]
+</script>
+
 <template>
-    <nav class="nav">
-        <NuxtLink to="/" class="logo" aria-label="Ir para início">
-            <svg
-                class="logo-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-            >
-                <path
-                    d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-                <path
-                    d="M8.5 10.5L12 12.5L15.5 10.5"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-            </svg>
-            <span>Extensão UnB</span>
-        </NuxtLink>
-
-        <div class="links">
-            <NuxtLink to="/" class="link">Início</NuxtLink>
-            <NuxtLink to="/projetos" class="link">Projetos</NuxtLink>
-            <NuxtLink to="/oportunidades" class="link">Oportunidades</NuxtLink>
-            <NuxtLink to="/perfil" class="profile-link" aria-label="Abrir perfil do usuário">
-                <img src="/images/default-avatar.svg" alt="Foto de perfil do usuário" class="profile-avatar" />
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+        <UContainer class="min-h-[4.75rem] flex items-center justify-between gap-6 py-3">
+            <NuxtLink to="/" class="flex items-center gap-4 text-white font-bold no-underline text-2xl tracking-[-0.02em]">
+                <UIcon name="i-heroicons-academic-cap" class="h-10 w-10" />
+                <span>Extensão UnB</span>
             </NuxtLink>
-        </div>
-    </nav>
+
+            <nav class="hidden md:flex items-center gap-3 flex-1 justify-center">
+                <UButton
+                    v-for="link in links"
+                    :key="link.to"
+                    :to="link.to"
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
+                    class="min-h-[3.25rem] px-4 text-[1.05rem] font-semibold text-white"
+                >
+                    {{ link.label }}
+                </UButton>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <UButton
+                    to="/perfil"
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
+                    class="hidden md:inline-flex min-h-[3.5rem] min-w-[3.5rem] p-1.5"
+                >
+                    <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="w-10 h-10" />
+                </UButton>
+
+                <UButton
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
+                    :icon="colorMode.value === 'dark' ? 'i-heroicons-sun' : 'i-heroicons-moon'"
+                    :aria-label="colorMode.value === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
+                    @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+                />
+
+                <UButton
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
+                    icon="i-heroicons-bars-3"
+                    class="md:hidden min-h-[3.5rem] min-w-[3.5rem]"
+                    :aria-label="isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'"
+                    @click="isMobileMenuOpen = !isMobileMenuOpen"
+                />
+            </div>
+        </UContainer>
+
+        <UContainer v-if="isMobileMenuOpen" class="md:hidden pb-5">
+            <div class="flex flex-col gap-3 bg-slate-900/95 border border-slate-800 rounded-2xl p-4">
+                <UButton
+                    v-for="link in links"
+                    :key="`mobile-${link.to}`"
+                    :to="link.to"
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
+                    block
+                    class="min-h-[3.5rem] justify-start font-semibold"
+                    @click="isMobileMenuOpen = false"
+                >
+                    {{ link.label }}
+                </UButton>
+
+                <UButton
+                    to="/perfil"
+                    variant="ghost"
+                    color="neutral"
+                    size="xl"
+                    block
+                    class="min-h-[3.5rem] justify-start font-semibold"
+                    @click="isMobileMenuOpen = false"
+                >
+                    <template #leading>
+                        <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="w-8 h-8" />
+                    </template>
+                    Perfil
+                </UButton>
+            </div>
+        </UContainer>
+    </header>
 </template>
-
-<style scoped>
-.nav {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0.875rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.logo {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo-icon {
-    width: 1.2rem;
-    height: 1.2rem;
-    flex-shrink: 0;
-}
-
-.links {
-    display: flex;
-    gap: 1.75rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.link {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.profile-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-}
-
-.profile-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 9999px;
-    object-fit: cover;
-    border: 2px solid #cbd5e1;
-    background: #e2e8f0;
-}
-
-.link:hover,
-.router-link-active,
-.profile-link:hover .profile-avatar {
-    color: #fff;
-}
-</style>

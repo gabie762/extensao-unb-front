@@ -5,7 +5,25 @@ export interface Oportunidade {
   projeto: Projeto
   titulo: string
   descricao: string
+  sobreProjeto: string
+  objetivos: string[]
+  atividadesDesenvolvidas: string[]
+  comoParticipar: string[]
+  certificado: boolean
   requisitos: string[]
   prazoInscricao: string
-  tipo: 'bolsa' | 'voluntario'
+  tipo: 'bolsa' | 'voluntariado'
+}
+
+export interface OportunidadeCard extends Oportunidade {
+  id: string
+  local: string
+  cargaHoraria: string
+}
+
+export type OportunidadeFiltro = 'todos' | Oportunidade['tipo']
+
+export interface OpcaoFiltroOportunidade {
+  label: string
+  value: OportunidadeFiltro
 }
