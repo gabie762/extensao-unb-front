@@ -14,7 +14,10 @@ const {
     activePrazo,
     filteredOpportunities,
     formatTipo,
-    formatPrazo
+    formatPrazo,
+    activeFiltersCount,
+    activeFiltersLabels,
+    resetAllFilters
 } = useOportunidades()
 
 const isDetailRoute = computed(() => Boolean(route.params.id))
@@ -43,12 +46,15 @@ const isDetailRoute = computed(() => Boolean(route.params.id))
             :certificado-options="certificadoOptions"
             :active-prazo="activePrazo"
             :prazo-options="prazoOptions"
+            :active-filters-count="activeFiltersCount"
+            :active-filters-labels="activeFiltersLabels"
             @update:search-term="searchTerm = $event"
             @toggle-filters="showFilters = !showFilters"
             @update:active-filter="activeFilter = $event"
             @update:active-area="activeArea = $event"
             @update:active-certificado="activeCertificado = $event"
             @update:active-prazo="activePrazo = $event"
+            @reset-filters="resetAllFilters"
         />
 
         <div class="text-slate-600 dark:text-slate-300 text-[0.95rem] font-semibold">

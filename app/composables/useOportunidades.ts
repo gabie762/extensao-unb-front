@@ -92,6 +92,49 @@ export function useOportunidades() {
     }).format(new Date(`${date}T00:00:00`))
   }
 
+  const activeFiltersCount = computed(() => {
+    let count = 0
+    if (searchTerm.value.trim().length > 0) count++
+    if (activeFilter.value !== 'todos') count++
+    if (activeArea.value !== 'todas') count++
+    if (activeCertificado.value !== 'todos') count++
+    if (activePrazo.value !== 'todos') count++
+    return count
+  })
+
+  const activeFiltersLabels = computed(() => {
+    const labels: string[] = []
+
+    if (activeFilter.value !== 'todos') {
+      const filterLabel = filterOptions.find((o) => o.value === activeFilter.value)?.label
+      if (filterLabel) labels.push(filterLabel)
+    }
+
+    if (activeArea.value !== 'todas') {
+      labels.push(activeArea.value)
+    }
+
+    if (activeCertificado.value !== 'todos') {
+      const certLabel = certificadoOptions.find((o) => o.value === activeCertificado.value)?.label
+      if (certLabel) labels.push(certLabel)
+    }
+
+    if (activePrazo.value !== 'todos') {
+      const prazoLabel = prazoOptions.find((o) => o.value === activePrazo.value)?.label
+      if (prazoLabel) labels.push(prazoLabel)
+    }
+
+    return labels
+  })
+
+  function resetAllFilters() {
+    searchTerm.value = ''
+    activeFilter.value = 'todos'
+    activeArea.value = 'todas'
+    activeCertificado.value = 'todos'
+    activePrazo.value = 'todos'
+  }
+
   return {
     opportunities,
     filterOptions,
@@ -106,6 +149,9 @@ export function useOportunidades() {
     activePrazo,
     filteredOpportunities,
     formatTipo,
-    formatPrazo
+    formatPrazo,
+    activeFiltersCount,
+    activeFiltersLabels,
+    resetAllFilters
   }
 }
