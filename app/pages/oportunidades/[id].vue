@@ -26,14 +26,17 @@ const vagasLabel = computed(() => {
 
   return 'Outro'
 })
+
+const backTo = computed(() => (route.query.from === 'perfil' ? '/perfil' : '/oportunidades'))
+const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar para perfil' : '← Voltar para oportunidades'))
 </script>
 
 <template>
   <section v-if="opportunity" class="flex flex-col gap-6">
     <!-- Header -->
     <header class="grid gap-4">
-      <NuxtLink to="/oportunidades" class="text-sm font-semibold text-primary hover:underline w-fit">
-        ← Voltar para oportunidades
+      <NuxtLink :to="backTo" class="text-sm font-semibold text-primary hover:underline w-fit">
+        {{ backLabel }}
       </NuxtLink>
 
       <div class="grid gap-2">
