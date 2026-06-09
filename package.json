@@ -9,6 +9,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "devDependencies": {
+    "@types/node": "^20.19.42"
+  },
   "dependencies": {
     "@nuxt/ui": "^4.5.1",
     "nuxt": "^4.3.1",
