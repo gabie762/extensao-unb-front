@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { opportunities } from '~/data/oportunidades'
+import type { OportunidadeCard } from '~/types/oportunidade'
 
-const usuario = {
-  id: 'student-1',
-  nome: 'Gabriela Não Sei Das Quantas',
-  email: 'gabriela.naoseidasquantas@aluno.unb.br',
-  role: 'aluno' as const,
-  departamento: 'Ciência da Computação',
-  semestre: '6º semestre',
-  interesses: ['Extensão', 'Dados', 'Educação'],
-  bio: 'Estudante de Ciência da Computação interessada em projetos de impacto social, análise de dados e desenvolvimento de produtos digitais para a comunidade acadêmica.'
-}
+const { user, logout } = useAuth()
 
-const inscricoesAtivas = opportunities.slice(0, 2)
-const oportunidadesSalvas = opportunities.slice(2, 4)
+// Using actual user data or fallback
+const usuario = computed(() => ({
+  id: user.value?.id || '',
+  nome: user.value?.nome || 'Usuário',
+  email: user.value?.email || '',
+  role: user.value?.role || 'ROLE_STUDENT',
+  departamento: user.value?.departamento || 'Não informado',
+  semestre: 'Semestre não informado', // Could be added to type/backend later
+  interesses: ['Extensão'],
+  bio: 'Perfil do usuário no sistema de extensão UnB.'
+}))
+
+// For now, keep as empty or fetch if backend supports user-specific applications
+const inscricoesAtivas = ref<OportunidadeCard[]>([])
+const oportunidadesSalvas = ref<OportunidadeCard[]>([])
 
 const stats = computed(() => {
-  const totalAtivas = inscricoesAtivas.length
-  const totalSalvas = oportunidadesSalvas.length
-  const totalCertificados = inscricoesAtivas.filter((item) => item.certificado).length + oportunidadesSalvas.filter((item) => item.certificado).length
+  const totalAtivas = inscricoesAtivas.value.length
+  const totalSalvas = oportunidadesSalvas.value.length
+  const totalCertificados = [...inscricoesAtivas.value, ...oportunidadesSalvas.value].filter(item => item.certificado).length
 
   return {
     totalAtivas,
@@ -81,6 +85,12 @@ const formatPrazo = (date: string) => {
                 >
                   {{ interesse }}
                 </UBadge>
+              </div>
+
+              <div class="mt-4">
+                <UButton color="error" variant="soft" icon="i-heroicons-arrow-left-on-rectangle" @click="logout">
+                  Sair da conta
+                </UButton>
               </div>
             </div>
           </div>
