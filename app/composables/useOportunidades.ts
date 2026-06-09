@@ -1,13 +1,18 @@
 import type {
-  Oportunidade,
+  OportunidadeCard,
   OportunidadeFiltro,
   OportunidadeCertificadoFiltro,
   OportunidadePrazoFiltro,
   OpcaoFiltroGenerica
 } from '~/types/oportunidade'
-import { filterOptions, opportunities } from '~/data/oportunidades'
+import { filterOptions } from '~/data/oportunidades'
 
 export function useOportunidades() {
+  const config = useRuntimeConfig()
+  const { data: opportunities, refresh, pending, error } = useFetch<OportunidadeCard[]>('/oportunidades', {
+    baseURL: config.public.apiBase
+  })
+
   const searchTerm = ref('')
   const showFilters = ref(false)
   const activeFilter = ref<OportunidadeFiltro>('todos')
@@ -16,7 +21,9 @@ export function useOportunidades() {
   const activePrazo = ref<OportunidadePrazoFiltro>('todos')
 
   const areaOptions = computed(() => {
-    const areas = Array.from(new Set(opportunities.map((opportunity) => opportunity.projeto.area))).sort()
+    if (!opportunities.value) return [{ label: 'Todas as áreas', value: 'todas' }]
+    
+    const areas = Array.from(new Set(opportunities.value.map((opportunity) => opportunity.projeto.area))).sort()
 
     return [
       { label: 'Todas as áreas', value: 'todas' },
@@ -38,13 +45,15 @@ export function useOportunidades() {
   ]
 
   const filteredOpportunities = computed(() => {
+    if (!opportunities.value) return []
+    
     const query = searchTerm.value.trim().toLowerCase()
     const now = new Date()
     now.setHours(0, 0, 0, 0)
 
-    return opportunities.filter((opportunity) => {
+    return opportunities.value.filter((opportunity) => {
       const matchesFilter = activeFilter.value === 'todos' || opportunity.tipo === activeFilter.value
-      const matchesArea = activeArea.value === 'todas' || opportunity.projeto.area === activeArea.value
+      const matchesArea = activeArea.value === 'todas' || (opportunity.projeto && opportunity.projeto.area === activeArea.value)
       const matchesCertificado =
         activeCertificado.value === 'todos' ||
         (activeCertificado.value === 'com' && opportunity.certificado) ||
@@ -66,11 +75,11 @@ export function useOportunidades() {
         [
           opportunity.titulo,
           opportunity.descricao,
-          opportunity.projeto.titulo,
-          opportunity.projeto.area,
-          opportunity.projeto.unidadeResponsavel,
+          opportunity.projeto?.titulo,
+          opportunity.projeto?.area,
+          opportunity.projeto?.unidadeResponsavel,
           opportunity.local,
-          ...opportunity.requisitos
+          ...(opportunity.requisitos || [])
         ]
           .join(' ')
           .toLowerCase()
@@ -80,7 +89,7 @@ export function useOportunidades() {
     })
   })
 
-  function formatTipo(tipo: Oportunidade['tipo']) {
+  function formatTipo(tipo: OportunidadeCard['tipo']) {
     return tipo === 'bolsa' ? 'bolsa' : 'voluntariado'
   }
 
@@ -137,6 +146,9 @@ export function useOportunidades() {
 
   return {
     opportunities,
+    pending,
+    error,
+    refresh,
     filterOptions,
     areaOptions,
     certificadoOptions,
