@@ -1,3 +1,4 @@
+import type { ProximoEvento } from './evento'
 import type { Usuario } from './usuario'
 
 export type AreaConhecimento =
@@ -14,11 +15,12 @@ export interface Projeto {
   id: string
   titulo: string
   area: AreaConhecimento
-  unidadeResponsavel: string
-  descricao: string
-  professor: Usuario
+  unidadeResponsavel: string,
+  resumo: string,
+  coordenador: string,
+  cronograma: string,
   tags: string[]
   status: 'aberto' | 'em_andamento' | 'encerrado'
-  vagas: number
-  createdAt: string
+  quantidadeParticipantes: number,
+  proximoEvento: ProximoEvento
 }
