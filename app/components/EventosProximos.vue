@@ -1,12 +1,8 @@
 <script setup lang="ts">
+import type { Evento } from '~/types/evento';
+
 defineProps<{
-  events: Array<{
-    id: number
-    title: string
-    date: string
-    time: string
-    location: string
-  }>
+  events: Evento[]
 }>()
 </script>
 
@@ -24,9 +20,9 @@ defineProps<{
         class="flex gap-3.5 items-start p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800"
       >
         <div class="grid gap-1">
-          <h3 class="m-0 text-slate-900 dark:text-white font-semibold text-sm leading-snug">{{ event.title }}</h3>
-          <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ event.date }} · {{ event.time }}</p>
-          <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ event.location }}</p>
+          <h3 class="m-0 text-slate-900 dark:text-white font-semibold text-sm leading-snug">{{ event.titulo }}</h3>
+          <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ event.inicioEm }}</p>
+          <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ event.local }}</p>
         </div>
       </div>
     </div>

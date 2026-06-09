@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import type { AreaConhecimento } from '~/types/projeto'
+import type { Projeto } from '~/types/projeto'
 
 defineProps<{
-  projects: Array<{
-    id: number
-    title: string
-    area: AreaConhecimento
-    unidadeResponsavel: string
-    description: string
-    mentor: string
-    schedule: string
-    tags: string[]
-  }>
-}>()
+  projects: Projeto[]}>()
 </script>
 
 <template>
@@ -39,13 +29,13 @@ defineProps<{
             <UBadge color="primary" variant="soft" class="w-fit font-bold">
               {{ project.area }}
             </UBadge>
-            <span class="text-slate-500 dark:text-slate-400 text-sm">{{ project.schedule }}</span>
+            <span class="text-slate-500 dark:text-slate-400 text-sm">{{ project.cronograma }}</span>
           </div>
         </template>
 
         <div class="flex flex-col gap-3 flex-1">
-          <h2 class="m-0 text-slate-900 dark:text-white text-[1.2rem] font-bold leading-snug line-clamp-2 min-h-[3.25rem]">{{ project.title }}</h2>
-          <p class="m-0 text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 min-h-[4.5rem]">{{ project.description }}</p>
+          <h2 class="m-0 text-slate-900 dark:text-white text-[1.2rem] font-bold leading-snug line-clamp-2 min-h-[3.25rem]">{{ project.titulo }}</h2>
+          <p class="m-0 text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 min-h-[4.5rem]">{{ project.resumo }}</p>
           <div class="flex flex-wrap gap-2 mt-1">
             <UBadge
               v-for="tag in project.tags"
@@ -62,7 +52,7 @@ defineProps<{
         <template #footer>
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
             <span class="text-slate-500 dark:text-slate-400 text-sm">
-              {{ project.mentor }} · {{ project.unidadeResponsavel }}
+              {{ project.coordenador }} · {{ project.unidadeResponsavel }}
             </span>
             <UButton color="primary" variant="soft" size="md" class="font-bold whitespace-nowrap w-full sm:w-auto">
               Ver projeto
