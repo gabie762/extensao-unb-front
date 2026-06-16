@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const { opportunities } = useOportunidades()
+const { oportunidades } = useOportunidades()
 
-const opportunity = computed(() => opportunities.find((item) => item.id === String(route.params.id)))
+const oportunidade = computed(() => oportunidades.value?.find((item) => item.id === String(route.params.id)))
 
 const statusLabelMap = {
   aberto: 'Aberto',
@@ -12,15 +12,15 @@ const statusLabelMap = {
 } as const
 
 const vagasLabel = computed(() => {
-  if (!opportunity.value) {
+  if (!oportunidade.value) {
     return 'Indisponível'
   }
 
-  if (opportunity.value.projeto.status === 'encerrado' || opportunity.value.projeto.vagas <= 0) {
+  if (oportunidade.value.projeto?.status === 'encerrado' || oportunidade.value.qtdeVagas <= 0) {
     return 'Fechadas'
   }
 
-  if (opportunity.value.projeto.status === 'aberto') {
+  if (oportunidade.value.projeto?.status === 'aberto') {
     return 'Abertas'
   }
 
@@ -32,7 +32,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
 </script>
 
 <template>
-  <section v-if="opportunity" class="flex flex-col gap-6">
+  <section v-if="oportunidade" class="flex flex-col gap-6">
     <!-- Header -->
     <header class="grid gap-4">
       <NuxtLink :to="backTo" class="text-sm font-semibold text-primary hover:underline w-fit">
@@ -42,19 +42,19 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
       <div class="grid gap-2">
         <p class="m-0 text-blue-600 text-sm font-bold tracking-wider uppercase">Detalhes da ação</p>
         <h1 class="m-0 text-slate-900 dark:text-white text-[clamp(2rem,3vw,2.5rem)] font-bold tracking-tight">
-          {{ opportunity.titulo }}
+          {{ oportunidade.titulo }}
         </h1>
       </div>
 
       <div class="flex flex-wrap gap-2">
         <UBadge color="neutral" variant="soft" class="font-semibold px-3 py-1">
-          {{ opportunity.projeto.unidadeResponsavel }}
+          {{ oportunidade.projeto?.unidadeResponsavel || 'Unidade não informada' }}
         </UBadge>
         <UBadge color="neutral" variant="soft" class="font-semibold px-3 py-1">
-          {{ opportunity.local }}
+          {{ oportunidade.local }}
         </UBadge>
         <UBadge
-          v-for="tag in opportunity.projeto.tags"
+          v-for="tag in (oportunidade.projeto?.tags || [])"
           :key="tag"
           color="primary"
           variant="soft"
@@ -77,7 +77,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
             <UIcon name="i-heroicons-academic-cap" class="w-5 h-5 text-slate-400 shrink-0" />
             <div class="min-w-0">
               <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 m-0 uppercase tracking-wide">Área</p>
-              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0 truncate">{{ opportunity.projeto.area }}</p>
+              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0 truncate">{{ oportunidade.projeto?.area || 'N/A' }}</p>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
             <UIcon name="i-heroicons-tag" class="w-5 h-5 text-slate-400 shrink-0" />
             <div class="min-w-0">
               <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 m-0 uppercase tracking-wide">Tipo</p>
-              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0 capitalize">{{ opportunity.tipo }}</p>
+              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0 capitalize">{{ oportunidade.tipo }}</p>
             </div>
           </div>
 
@@ -93,7 +93,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
             <UIcon name="i-heroicons-clock" class="w-5 h-5 text-slate-400 shrink-0" />
             <div class="min-w-0">
               <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 m-0 uppercase tracking-wide">Carga horária</p>
-              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0">{{ opportunity.cargaHoraria }}</p>
+              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0">{{ oportunidade.cargaHoraria }}</p>
             </div>
           </div>
 
@@ -101,7 +101,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
             <UIcon name="i-heroicons-calendar" class="w-5 h-5 text-slate-400 shrink-0" />
             <div class="min-w-0">
               <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 m-0 uppercase tracking-wide">Prazo</p>
-              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0">{{ new Intl.DateTimeFormat('pt-BR').format(new Date(opportunity.prazoInscricao + 'T00:00:00')) }}</p>
+              <p class="text-[13px] font-semibold text-slate-900 dark:text-slate-100 m-0">{{ new Intl.DateTimeFormat('pt-BR').format(new Date(oportunidade.prazoInscricao + 'T00:00:00')) }}</p>
             </div>
           </div>
         </div>
@@ -109,26 +109,26 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
         <!-- Description -->
         <div class="border-t border-slate-200 dark:border-slate-700 pt-5">
           <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">Descrição</h2>
-          <p class="text-slate-700 dark:text-slate-300 leading-relaxed m-0 text-[15px]">{{ opportunity.descricao }}</p>
+          <p class="text-slate-700 dark:text-slate-300 leading-relaxed m-0 text-[15px]">{{ oportunidade.descricao }}</p>
         </div>
 
         <!-- Sobre o Projeto -->
         <div class="border-t border-slate-200 dark:border-slate-700 pt-5">
           <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">Sobre o Projeto</h2>
-          <p class="text-slate-700 dark:text-slate-300 leading-relaxed m-0 text-[15px]">{{ opportunity.sobreProjeto }}</p>
+          <p class="text-slate-700 dark:text-slate-300 leading-relaxed m-0 text-[15px]">{{ oportunidade.sobreProjeto }}</p>
         </div>
 
         <div class="border-t border-slate-200 dark:border-slate-700 pt-5">
           <h2 class="text-base font-bold text-slate-900 dark:text-white mb-3">Objetivos</h2>
           <ul class="m-0 pl-5 grid gap-2 text-[15px] text-slate-700 dark:text-slate-300">
-            <li v-for="item in opportunity.objetivos" :key="item">{{ item }}</li>
+            <li v-for="item in oportunidade.objetivos" :key="item">{{ item }}</li>
           </ul>
         </div>
 
         <div class="border-t border-slate-200 dark:border-slate-700 pt-5">
           <h2 class="text-base font-bold text-slate-900 dark:text-white mb-3">Atividades Desenvolvidas</h2>
           <ul class="m-0 pl-5 grid gap-2 text-[15px] text-slate-700 dark:text-slate-300">
-            <li v-for="item in opportunity.atividadesDesenvolvidas" :key="item">{{ item }}</li>
+            <li v-for="item in oportunidade.atividadesDesenvolvidas" :key="item">{{ item }}</li>
           </ul>
         </div>
 
@@ -137,7 +137,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
           <h2 class="text-base font-bold text-slate-900 dark:text-white mb-3">Requisitos</h2>
           <div class="flex flex-wrap gap-2">
             <UBadge
-              v-for="req in opportunity.requisitos"
+              v-for="req in oportunidade.requisitos"
               :key="req"
               color="neutral"
               variant="soft"
@@ -162,26 +162,26 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
             <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-lg col-span-2 sm:col-span-1 md:col-span-2">
               <p class="text-xs font-bold text-slate-500 dark:text-slate-400 m-0">Status</p>
               <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0 mt-1">
-                {{ statusLabelMap[opportunity.projeto.status] }}
+                {{ oportunidade.projeto?.status ? statusLabelMap[oportunidade.projeto.status] : 'N/A' }}
               </p>
             </div>
 
             <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-lg col-span-2 sm:col-span-1 md:col-span-2">
               <p class="text-xs font-bold text-slate-500 dark:text-slate-400 m-0">Vagas</p>
               <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0 mt-1">
-                {{ vagasLabel }} ({{ opportunity.projeto.vagas }})
+                {{ vagasLabel }} ({{ oportunidade.qtdeVagas }})
               </p>
             </div>
 
             <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-lg col-span-2 sm:col-span-1 md:col-span-2">
               <p class="text-xs font-bold text-slate-500 dark:text-slate-400 m-0">Carga horária</p>
-              <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0 mt-1">{{ opportunity.cargaHoraria }}</p>
+              <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0 mt-1">{{ oportunidade.cargaHoraria }}</p>
             </div>
 
             <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-lg col-span-2 sm:col-span-1 md:col-span-2">
               <p class="text-xs font-bold text-slate-500 dark:text-slate-400 m-0">Certificado</p>
               <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0 mt-1">
-                {{ opportunity.certificado ? 'Sim' : 'Não' }}
+                {{ oportunidade.certificado ? 'Sim' : 'Não' }}
               </p>
             </div>
           </div>
@@ -194,17 +194,17 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
           </template>
 
           <ul class="m-0 pl-5 grid gap-2 text-[15px] text-slate-700 dark:text-slate-300">
-            <li v-for="item in opportunity.comoParticipar" :key="item">{{ item }}</li>
+            <li v-for="item in oportunidade.comoParticipar" :key="item">{{ item }}</li>
           </ul>
 
-          <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4 grid gap-0.5">
+          <div v-if="oportunidade.projeto?.coordenador" class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4 grid gap-0.5">
             <p class="text-xs font-bold text-slate-500 dark:text-slate-400 m-0 mb-1">Coordenação</p>
-            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0">{{ opportunity.projeto.professor.nome }}</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300 m-0">{{ opportunity.projeto.professor.departamento }}</p>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0">{{ oportunidade.projeto.coordenador.nome }}</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300 m-0">{{ oportunidade.projeto.coordenador.departamento || '' }}</p>
             <a
-              :href="`mailto:${opportunity.projeto.professor.email}`"
+              :href="`mailto:${oportunidade.projeto.coordenador.email}`"
               class="text-sm text-primary hover:underline m-0 w-fit"
-            >{{ opportunity.projeto.professor.email }}</a>
+            >{{ oportunidade.projeto.coordenador.email }}</a>
           </div>
         </UCard>
 

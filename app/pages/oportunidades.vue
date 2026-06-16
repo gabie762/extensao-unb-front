@@ -5,13 +5,11 @@ const {
     pending,
     error,
     filterOptions,
-    areaOptions,
     certificadoOptions,
     prazoOptions,
     searchTerm,
     showFilters,
     activeFilter,
-    activeArea,
     activeCertificado,
     activePrazo,
     filteredOpportunities,
@@ -42,8 +40,6 @@ const isDetailRoute = computed(() => Boolean(route.params.id))
             :show-filters="showFilters"
             :active-filter="activeFilter"
             :filter-options="filterOptions"
-            :active-area="activeArea"
-            :area-options="areaOptions"
             :active-certificado="activeCertificado"
             :certificado-options="certificadoOptions"
             :active-prazo="activePrazo"
@@ -53,7 +49,6 @@ const isDetailRoute = computed(() => Boolean(route.params.id))
             @update:search-term="searchTerm = $event"
             @toggle-filters="showFilters = !showFilters"
             @update:active-filter="activeFilter = $event"
-            @update:active-area="activeArea = $event"
             @update:active-certificado="activeCertificado = $event"
             @update:active-prazo="activePrazo = $event"
             @reset-filters="resetAllFilters"
