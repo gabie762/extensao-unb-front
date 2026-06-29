@@ -49,25 +49,25 @@ definePageMeta({
       
       <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
         <div class="space-y-4">
-          <UFormField label="E-mail" required>
-            <UInput 
-              v-model="credentials.email" 
-              type="email" 
-              placeholder="exemplo@unb.br" 
+          <UFormField label="E-mail" required class="w-full">
+            <UInput
+              v-model="credentials.email"
+              type="email"
+              placeholder="exemplo@unb.br"
               icon="i-heroicons-envelope"
               size="xl"
-              block
+              class="w-full"
             />
           </UFormField>
 
-          <UFormField label="Senha" required>
-            <UInput 
-              v-model="credentials.senha" 
-              type="password" 
-              placeholder="••••••••" 
+          <UFormField label="Senha" required class="w-full">
+            <UInput
+              v-model="credentials.senha"
+              type="password"
+              placeholder="••••••••"
               icon="i-heroicons-lock-closed"
               size="xl"
-              block
+              class="w-full"
             />
           </UFormField>
         </div>
