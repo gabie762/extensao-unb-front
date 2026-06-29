@@ -4,6 +4,19 @@ import type { Evento } from '~/types/evento';
 defineProps<{
   events: Evento[]
 }>()
+
+function formatarDataHora(valor: string) {
+  if (!valor) return ''
+  const date = new Date(valor)
+  if (isNaN(date.getTime())) return valor
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date)
+}
 </script>
 
 <template>
@@ -21,7 +34,7 @@ defineProps<{
       >
         <div class="grid gap-1">
           <h3 class="m-0 text-slate-900 dark:text-white font-semibold text-sm leading-snug">{{ event.titulo }}</h3>
-          <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ event.inicioEm }}</p>
+          <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ formatarDataHora(event.inicioEm) }}</p>
           <p class="m-0 text-slate-500 dark:text-slate-400 text-sm">{{ event.local }}</p>
         </div>
       </div>

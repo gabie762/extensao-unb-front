@@ -9,7 +9,13 @@ function formatarCronograma(valor: string) {
   if (!valor) return ''
   const date = new Date(valor)
   if (isNaN(date.getTime())) return valor
-  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date)
+  const temHorario = valor.includes('T') && !valor.endsWith('T00:00:00') && !valor.endsWith('T00:00:00Z')
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    ...(temHorario && { hour: '2-digit', minute: '2-digit' })
+  }).format(date)
 }
 </script>
 
