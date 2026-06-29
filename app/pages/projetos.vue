@@ -25,7 +25,7 @@ const isDetailRoute = computed(() => Boolean(route.params.id))
       placeholder="Buscar por título, coordenador ou área"
       icon="i-heroicons-magnifying-glass"
       size="xl"
-      class="max-w-xl"
+      class="w-full"
     />
 
     <div v-if="pending" class="flex justify-center py-12">
