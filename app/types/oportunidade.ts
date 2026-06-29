@@ -11,7 +11,7 @@ export interface Oportunidade {
   comoParticipar: string[]
   certificado: boolean
   requisitos: string[]
-  qtdeVagas: number
+  vagas: number
   prazoInscricao: string
   tipo: 'bolsa' | 'voluntariado'
 }

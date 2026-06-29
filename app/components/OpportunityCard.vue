@@ -14,7 +14,7 @@ defineProps<{
     <template #header>
       <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div class="min-h-[4.5rem]">
-          <p class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1 line-clamp-1">{{ opportunity.projeto.titulo }}</p>
+          <p class="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-1 line-clamp-1">{{ opportunity.projeto?.titulo || 'Projeto não informado' }}</p>
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white leading-tight line-clamp-2">{{ opportunity.titulo }}</h2>
         </div>
         <UTooltip text="Prazo final para inscrições" placement="top">
@@ -50,7 +50,7 @@ defineProps<{
           <UIcon name="i-heroicons-academic-cap" class="w-5 h-5 text-slate-400 dark:text-slate-500" />
           <div class="flex flex-col">
             <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-0.5">Área</span>
-            <span class="text-[14px] font-semibold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1">{{ opportunity.projeto.area }}</span>
+            <span class="text-[14px] font-semibold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1">{{ opportunity.projeto?.area || 'N/A' }}</span>
           </div>
         </div>
 
@@ -58,7 +58,7 @@ defineProps<{
           <UIcon name="i-heroicons-building-office" class="w-5 h-5 text-slate-400 dark:text-slate-500" />
           <div class="flex flex-col">
             <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-0.5">Unidade responsável</span>
-            <span class="text-[14px] font-semibold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1">{{ opportunity.projeto.unidadeResponsavel }}</span>
+            <span class="text-[14px] font-semibold text-slate-900 dark:text-slate-100 leading-tight line-clamp-1">{{ opportunity.projeto?.unidadeResponsavel || 'N/A' }}</span>
           </div>
         </div>
 

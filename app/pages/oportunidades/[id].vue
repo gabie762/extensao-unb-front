@@ -16,7 +16,7 @@ const vagasLabel = computed(() => {
     return 'Indisponível'
   }
 
-  if (oportunidade.value.projeto?.status === 'encerrado' || oportunidade.value.qtdeVagas <= 0) {
+  if (oportunidade.value.projeto?.status === 'encerrado' || oportunidade.value.vagas <= 0) {
     return 'Fechadas'
   }
 
@@ -169,7 +169,7 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
             <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-lg col-span-2 sm:col-span-1 md:col-span-2">
               <p class="text-xs font-bold text-slate-500 dark:text-slate-400 m-0">Vagas</p>
               <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 m-0 mt-1">
-                {{ vagasLabel }} ({{ oportunidade.qtdeVagas }})
+                {{ vagasLabel }} ({{ oportunidade.vagas }})
               </p>
             </div>
 
@@ -205,6 +205,20 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
               :href="`mailto:${oportunidade.projeto.coordenador.email}`"
               class="text-sm text-primary hover:underline m-0 w-fit"
             >{{ oportunidade.projeto.coordenador.email }}</a>
+          </div>
+
+          <div v-if="oportunidade.projetoId" class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <UButton
+              :to="`/projetos/${oportunidade.projetoId}?from=oportunidades`"
+              color="neutral"
+              variant="soft"
+              size="md"
+              icon="i-heroicons-arrow-top-right-on-square"
+              trailing
+              class="w-full justify-center font-semibold"
+            >
+              Ver Projeto Completo
+            </UButton>
           </div>
         </UCard>
 

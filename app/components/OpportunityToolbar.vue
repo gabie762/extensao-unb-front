@@ -12,8 +12,6 @@ defineProps<{
   showFilters: boolean
   activeFilter: OportunidadeFiltro
   filterOptions: OpcaoFiltroOportunidade[]
-  activeArea: string
-  areaOptions: OpcaoFiltroGenerica<string>[]
   activeCertificado: OportunidadeCertificadoFiltro
   certificadoOptions: OpcaoFiltroGenerica<OportunidadeCertificadoFiltro>[]
   activePrazo: OportunidadePrazoFiltro
@@ -26,7 +24,6 @@ const emit = defineEmits<{
   (e: 'update:searchTerm', value: string): void
   (e: 'toggleFilters'): void
   (e: 'update:activeFilter', value: OportunidadeFiltro): void
-  (e: 'update:activeArea', value: string): void
   (e: 'update:activeCertificado', value: OportunidadeCertificadoFiltro): void
   (e: 'update:activePrazo', value: OportunidadePrazoFiltro): void
   (e: 'resetFilters'): void
@@ -145,29 +142,6 @@ const emit = defineEmits<{
                 :color="activeFilter === option.value ? 'primary' : 'neutral'"
                 class="w-full justify-start rounded-lg font-medium"
                 @click="emit('update:activeFilter', option.value)"
-              >
-                {{ option.label }}
-              </UButton>
-            </div>
-          </div>
-
-          <UDivider />
-
-          <!-- Área -->
-          <div class="grid gap-3">
-            <p class="m-0 text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2">
-              <UIcon name="i-heroicons-academic-cap" class="w-5 h-5" />
-              Área
-            </p>
-            <div class="flex flex-col gap-2">
-              <UButton
-                v-for="option in areaOptions"
-                :key="option.value"
-                size="sm"
-                :variant="activeArea === option.value ? 'soft' : 'ghost'"
-                :color="activeArea === option.value ? 'primary' : 'neutral'"
-                class="w-full justify-start rounded-lg font-medium"
-                @click="emit('update:activeArea', option.value)"
               >
                 {{ option.label }}
               </UButton>
