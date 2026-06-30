@@ -6,10 +6,18 @@ export interface Usuario {
   email: string
   avatar?: string
   role: UserRole
+  papeis?: string[]
   departamento?: string
+  unidade?: string
+  semestre?: string
+  interesses?: string[]
+  bio?: string
 }
 
 export interface LoginResponse {
   token: string
-  user: Usuario
+  id: string
+  nome: string
+  email: string
+  papeis: string[]
 }

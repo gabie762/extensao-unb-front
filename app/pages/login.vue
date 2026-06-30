@@ -86,10 +86,6 @@ definePageMeta({
           Entrar no sistema
         </UButton>
 
-        <div class="text-center text-sm text-slate-500">
-          Não tem uma conta? 
-          <NuxtLink to="/cadastro" class="text-blue-600 hover:underline font-semibold">Cadastre-se</NuxtLink>
-        </div>
       </form>
     </div>
   </div>
