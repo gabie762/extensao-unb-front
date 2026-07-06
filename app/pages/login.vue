@@ -76,15 +76,22 @@ definePageMeta({
           {{ error }}
         </div>
 
-        <UButton 
-          type="submit" 
-          block 
-          size="xl" 
+        <UButton
+          type="submit"
+          block
+          size="xl"
           :loading="loading"
           class="font-bold py-4"
         >
           Entrar no sistema
         </UButton>
+
+        <p class="text-center text-sm text-slate-600 dark:text-slate-400">
+          Não tem uma conta?
+          <NuxtLink to="/cadastro" class="text-blue-600 hover:text-blue-700 font-semibold">
+            Criar conta
+          </NuxtLink>
+        </p>
 
       </form>
     </div>
