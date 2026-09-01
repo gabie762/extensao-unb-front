@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const { isAuthenticated, user } = useAuth()
 
   // Public routes that don't need auth
-  const publicRoutes = ['/', '/oportunidades', '/login', '/cadastro']
+  const publicRoutes = ['/', '/oportunidades', '/login', '/cadastro', '/verificar-email', '/reenviar-verificacao']
   const isPublic = publicRoutes.includes(to.path) || to.path.startsWith('/oportunidades/')
 
   if (!isAuthenticated.value && !isPublic) {

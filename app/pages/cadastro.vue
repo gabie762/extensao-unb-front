@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { login } = useAuth()
-const router = useRouter()
 const config = useRuntimeConfig()
 
 const form = reactive({
@@ -40,7 +38,7 @@ async function handleCadastro() {
 
   loading.value = true
   try {
-    const data = await $fetch<{ token?: string }>('/auth/cadastro', {
+    await $fetch('/auth/cadastro', {
       baseURL: config.public.apiBase,
       method: 'POST',
       body: {
@@ -51,12 +49,7 @@ async function handleCadastro() {
       }
     })
 
-    if (data?.token) {
-      await login({ email: form.email, senha: form.senha })
-      router.push('/')
-    } else {
-      sucesso.value = true
-    }
+    sucesso.value = true
   } catch (err: any) {
     const status = err?.status ?? err?.response?.status
     if (status === 409) {

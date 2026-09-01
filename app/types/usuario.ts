@@ -12,6 +12,7 @@ export interface Usuario {
   semestre?: string
   interesses?: string[]
   bio?: string
+  emailVerificado?: boolean
 }
 
 export interface LoginResponse {
