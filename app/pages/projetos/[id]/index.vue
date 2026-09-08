@@ -53,6 +53,40 @@ async function excluirProjeto() {
   }
 }
 
+const excluindoOportunidadeId = ref<string | null>(null)
+
+async function excluirOportunidade(oportunidade: OportunidadeCard) {
+  if (!confirm(`Tem certeza que deseja excluir a oportunidade "${oportunidade.titulo}"? Essa ação não pode ser desfeita.`)) return
+
+  excluindoOportunidadeId.value = oportunidade.id
+  try {
+    await apiFetch(`/oportunidades/${oportunidade.id}`, { method: 'DELETE' })
+    await refreshNuxtData()
+  } catch (err) {
+    console.error(err)
+    alert('Erro ao excluir a oportunidade. Tente novamente.')
+  } finally {
+    excluindoOportunidadeId.value = null
+  }
+}
+
+const excluindoEventoId = ref<string | null>(null)
+
+async function excluirEvento(evento: Evento) {
+  if (!confirm(`Tem certeza que deseja excluir o evento "${evento.titulo}"? Essa ação não pode ser desfeita.`)) return
+
+  excluindoEventoId.value = evento.id
+  try {
+    await apiFetch(`/eventos/${evento.id}`, { method: 'DELETE' })
+    await refreshNuxtData()
+  } catch (err) {
+    console.error(err)
+    alert('Erro ao excluir o evento. Tente novamente.')
+  } finally {
+    excluindoEventoId.value = null
+  }
+}
+
 function formatarDataHora(valor: string | undefined | null) {
   if (!valor) return ''
   const date = new Date(valor)
@@ -115,12 +149,12 @@ function formatarData(data: string | undefined | null) {
         {{ backLabel }}
       </NuxtLink>
 
-      <div v-if="podeEditar" class="flex items-center gap-2 shrink-0">
+      <div v-if="podeEditar" class="flex items-center gap-3 shrink-0">
         <UButton
           :to="{ path: `/projetos/${projeto.id}/editar`, query: origemQuery }"
           color="neutral"
           variant="outline"
-          size="sm"
+          size="lg"
           icon="i-heroicons-pencil-square"
           class="font-semibold"
         >
@@ -129,7 +163,7 @@ function formatarData(data: string | undefined | null) {
         <UButton
           color="error"
           variant="outline"
-          size="sm"
+          size="lg"
           icon="i-heroicons-trash"
           class="font-semibold"
           :loading="excluindo"
@@ -284,20 +318,43 @@ function formatarData(data: string | undefined | null) {
           </div>
 
           <div v-if="oportunidadesDoProjeto?.length" class="grid gap-2">
-            <NuxtLink
+            <div
               v-for="oportunidade in oportunidadesDoProjeto"
               :key="oportunidade.id"
-              :to="`/oportunidades/${oportunidade.id}`"
-              class="flex items-center justify-between gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 no-underline hover:border-primary transition-colors"
+              class="flex items-center justify-between gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
             >
-              <div class="min-w-0">
-                <p class="m-0 text-sm font-semibold text-slate-900 dark:text-white truncate">{{ oportunidade.titulo }}</p>
+              <NuxtLink
+                :to="`/oportunidades/${oportunidade.id}`"
+                class="min-w-0 flex-1 no-underline"
+              >
+                <p class="m-0 text-sm font-semibold text-slate-900 dark:text-white truncate hover:text-primary transition-colors">{{ oportunidade.titulo }}</p>
                 <p class="m-0 text-xs text-slate-500 dark:text-slate-400 mt-0.5">Prazo: {{ formatarData(oportunidade.prazoInscricao) }}</p>
+              </NuxtLink>
+              <div class="flex items-center gap-2 shrink-0">
+                <UBadge :color="oportunidade.tipo === 'bolsa' ? 'primary' : 'secondary'" variant="soft" class="shrink-0 font-semibold capitalize">
+                  {{ oportunidade.tipo }}
+                </UBadge>
+                <template v-if="podeEditar">
+                  <UButton
+                    :to="{ path: `/projetos/${projeto.id}/oportunidades/${oportunidade.id}/editar`, query: origemQuery }"
+                    color="neutral"
+                    variant="outline"
+                    size="lg"
+                    icon="i-heroicons-pencil-square"
+                    aria-label="Editar oportunidade"
+                  />
+                  <UButton
+                    color="error"
+                    variant="outline"
+                    size="lg"
+                    icon="i-heroicons-trash"
+                    aria-label="Excluir oportunidade"
+                    :loading="excluindoOportunidadeId === oportunidade.id"
+                    @click="excluirOportunidade(oportunidade)"
+                  />
+                </template>
               </div>
-              <UBadge :color="oportunidade.tipo === 'bolsa' ? 'primary' : 'secondary'" variant="soft" class="shrink-0 font-semibold capitalize">
-                {{ oportunidade.tipo }}
-              </UBadge>
-            </NuxtLink>
+            </div>
           </div>
           <p v-else class="m-0 text-sm text-slate-500 dark:text-slate-400">Nenhuma oportunidade publicada para esta ação ainda.</p>
         </div>
@@ -328,15 +385,36 @@ function formatarData(data: string | undefined | null) {
               :key="evento.id"
               class="flex items-center justify-between gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
             >
-              <div class="min-w-0">
+              <div class="min-w-0 flex-1">
                 <p class="m-0 text-sm font-semibold text-slate-900 dark:text-white truncate">{{ evento.titulo }}</p>
                 <p class="m-0 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   {{ formatarDataHora(evento.inicioEm) }}<span v-if="evento.local"> • {{ evento.local }}</span>
                 </p>
               </div>
-              <UBadge v-if="evento.tipo" color="neutral" variant="soft" class="shrink-0 font-medium capitalize">
-                {{ evento.tipo }}
-              </UBadge>
+              <div class="flex items-center gap-2 shrink-0">
+                <UBadge v-if="evento.tipo" color="neutral" variant="soft" class="shrink-0 font-medium capitalize">
+                  {{ evento.tipo }}
+                </UBadge>
+                <template v-if="podeEditar">
+                  <UButton
+                    :to="{ path: `/projetos/${projeto.id}/eventos/${evento.id}/editar`, query: origemQuery }"
+                    color="neutral"
+                    variant="outline"
+                    size="lg"
+                    icon="i-heroicons-pencil-square"
+                    aria-label="Editar evento"
+                  />
+                  <UButton
+                    color="error"
+                    variant="outline"
+                    size="lg"
+                    icon="i-heroicons-trash"
+                    aria-label="Excluir evento"
+                    :loading="excluindoEventoId === evento.id"
+                    @click="excluirEvento(evento)"
+                  />
+                </template>
+              </div>
             </div>
           </div>
           <p v-else class="m-0 text-sm text-slate-500 dark:text-slate-400">Nenhum evento cadastrado para esta ação ainda.</p>

@@ -189,16 +189,16 @@ function formatTipo(tipo: 'bolsa' | 'voluntariado') {
                   <span>{{ projeto.vagas }} vagas</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2">
-                  <UButton :to="{ path: `/projetos/${projeto.id}`, query: { from: 'perfil' } }" color="neutral" variant="soft" size="sm" class="justify-center">
+                  <UButton :to="{ path: `/projetos/${projeto.id}`, query: { from: 'perfil' } }" color="neutral" variant="soft" size="lg" class="justify-center">
                     Ver
                   </UButton>
-                  <UButton :to="{ path: `/projetos/${projeto.id}/editar`, query: { from: 'perfil' } }" color="primary" variant="soft" size="sm" icon="i-heroicons-pencil-square" class="justify-center">
+                  <UButton :to="{ path: `/projetos/${projeto.id}/editar`, query: { from: 'perfil' } }" color="primary" variant="soft" size="lg" icon="i-heroicons-pencil-square" class="justify-center">
                     Editar
                   </UButton>
                   <UButton
                     color="error"
                     variant="soft"
-                    size="sm"
+                    size="lg"
                     icon="i-heroicons-trash"
                     class="justify-center"
                     :loading="excluindoId === projeto.id"
