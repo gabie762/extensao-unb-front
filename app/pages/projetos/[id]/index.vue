@@ -3,6 +3,7 @@ import type { Projeto } from '~/types/projeto'
 
 const route = useRoute()
 const apiFetch = useApi()
+const { user } = useAuth()
 
 const { data: projeto, pending, error } = useAsyncData<Projeto>(
   `projeto-${route.params.id}`,
@@ -14,6 +15,12 @@ const statusConfig = {
   em_andamento: { label: 'Em andamento', color: 'primary' as const },
   encerrado: { label: 'Encerrado', color: 'neutral' as const }
 }
+
+const podeEditar = computed(() => {
+  if (!user.value || !projeto.value) return false
+  if (user.value.role === 'ROLE_ADMIN') return true
+  return user.value.role === 'ROLE_PROFESSOR' && user.value.id === projeto.value.coordenador?.id
+})
 
 const backTo = computed(() => {
   if (route.query.from === 'feed') return '/'
@@ -55,9 +62,23 @@ function formatarData(data: string | undefined | null) {
   <section v-else class="flex flex-col gap-8">
 
     <!-- Navegação de retorno -->
-    <NuxtLink :to="backTo" class="text-sm font-semibold text-primary hover:underline w-fit">
-      {{ backLabel }}
-    </NuxtLink>
+    <div class="flex items-center justify-between gap-3">
+      <NuxtLink :to="backTo" class="text-sm font-semibold text-primary hover:underline w-fit">
+        {{ backLabel }}
+      </NuxtLink>
+
+      <UButton
+        v-if="podeEditar"
+        :to="`/projetos/${projeto.id}/editar`"
+        color="neutral"
+        variant="outline"
+        size="sm"
+        icon="i-heroicons-pencil-square"
+        class="font-semibold shrink-0"
+      >
+        Editar
+      </UButton>
+    </div>
 
     <!-- Header -->
     <header class="grid gap-4">

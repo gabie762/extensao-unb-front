@@ -9,6 +9,14 @@ const roleLabel: Record<string, string> = {
   ROLE_ADMIN: 'Administrador'
 }
 
+const podeGerenciarProjetos = computed(() => ['ROLE_PROFESSOR', 'ROLE_ADMIN'].includes(user.value?.role || ''))
+const { pending: projetosPending, meusProjetos } = useProjetos()
+
+const statusConfig = {
+  aberto: { label: 'Aberto', color: 'success' as const },
+  em_andamento: { label: 'Em andamento', color: 'primary' as const },
+  encerrado: { label: 'Encerrado', color: 'neutral' as const }
+}
 
 const inicial = computed(() => user.value?.nome?.charAt(0).toUpperCase() ?? '?')
 
@@ -129,6 +137,59 @@ function formatTipo(tipo: 'bolsa' | 'voluntariado') {
             </div>
           </div>
         </UCard>
+
+        <!-- Meus projetos (professor/admin) -->
+        <section v-if="podeGerenciarProjetos" class="grid gap-3">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="m-0 text-slate-900 dark:text-white text-xl font-bold">Meus projetos</h3>
+            <UButton to="/projetos/novo" color="primary" variant="soft" size="sm" icon="i-heroicons-plus">
+              Nova ação
+            </UButton>
+          </div>
+
+          <div v-if="projetosPending" class="flex justify-center py-8">
+            <UIcon name="i-heroicons-arrow-path" class="w-6 h-6 animate-spin text-primary" />
+          </div>
+
+          <div v-else-if="meusProjetos.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <UCard
+              v-for="projeto in meusProjetos"
+              :key="projeto.id"
+              class="rounded-xl h-full"
+            >
+              <div class="grid gap-3">
+                <div class="flex items-start justify-between gap-3">
+                  <h4 class="m-0 text-slate-900 dark:text-white text-base font-bold leading-snug line-clamp-2">{{ projeto.titulo }}</h4>
+                  <UBadge :color="statusConfig[projeto.status].color" variant="soft" class="shrink-0 font-semibold">
+                    {{ statusConfig[projeto.status].label }}
+                  </UBadge>
+                </div>
+                <p class="m-0 text-slate-600 dark:text-slate-300 text-sm line-clamp-2">{{ projeto.resumo || projeto.descricao || 'Sem descrição disponível.' }}</p>
+                <div class="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                  <span>{{ projeto.area }}</span>
+                  <span>•</span>
+                  <span>{{ projeto.vagas }} vagas</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <UButton :to="`/projetos/${projeto.id}`" color="neutral" variant="soft" size="sm" class="justify-center">
+                    Ver detalhes
+                  </UButton>
+                  <UButton :to="`/projetos/${projeto.id}/editar`" color="primary" variant="soft" size="sm" icon="i-heroicons-pencil-square" class="justify-center">
+                    Editar
+                  </UButton>
+                </div>
+              </div>
+            </UCard>
+          </div>
+
+          <div v-else class="flex flex-col items-center gap-3 py-10 text-center bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <UIcon name="i-heroicons-briefcase" class="w-10 h-10 text-slate-300 dark:text-slate-600" />
+            <p class="m-0 text-slate-500 dark:text-slate-400 font-medium">Você ainda não cadastrou nenhuma ação de extensão.</p>
+            <UButton to="/projetos/novo" color="primary" variant="soft" size="sm">
+              Cadastrar ação
+            </UButton>
+          </div>
+        </section>
 
         <!-- Inscrições ativas -->
         <section class="grid gap-3">
