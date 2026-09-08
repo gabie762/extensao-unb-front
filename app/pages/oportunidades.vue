@@ -2,13 +2,22 @@
 const route = useRoute()
 
 const {
+    pending,
+    error,
     filterOptions,
+    certificadoOptions,
+    prazoOptions,
     searchTerm,
     showFilters,
     activeFilter,
+    activeCertificado,
+    activePrazo,
     filteredOpportunities,
     formatTipo,
-    formatPrazo
+    formatPrazo,
+    activeFiltersCount,
+    activeFiltersLabels,
+    resetAllFilters
 } = useOportunidades()
 
 const isDetailRoute = computed(() => Boolean(route.params.id))
@@ -31,25 +40,43 @@ const isDetailRoute = computed(() => Boolean(route.params.id))
             :show-filters="showFilters"
             :active-filter="activeFilter"
             :filter-options="filterOptions"
+            :active-certificado="activeCertificado"
+            :certificado-options="certificadoOptions"
+            :active-prazo="activePrazo"
+            :prazo-options="prazoOptions"
+            :active-filters-count="activeFiltersCount"
+            :active-filters-labels="activeFiltersLabels"
             @update:search-term="searchTerm = $event"
             @toggle-filters="showFilters = !showFilters"
             @update:active-filter="activeFilter = $event"
+            @update:active-certificado="activeCertificado = $event"
+            @update:active-prazo="activePrazo = $event"
+            @reset-filters="resetAllFilters"
         />
 
-        <div class="text-slate-600 dark:text-slate-300 text-[0.95rem] font-semibold">
-            <span>{{ filteredOpportunities.length }} oportunidades abertas</span>
+        <div v-if="pending" class="flex justify-center py-12">
+            <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-primary" />
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-            <OpportunityCard
-                v-for="opportunity in filteredOpportunities"
-                :key="opportunity.id"
-                :opportunity="opportunity"
-                :format-tipo="formatTipo"
-                :format-prazo="formatPrazo"
-                class="h-full"
-
-            />
+        <div v-else-if="error" class="bg-red-50 p-4 rounded-md text-red-700 text-center">
+            Erro ao carregar oportunidades. Por favor, tente novamente mais tarde.
         </div>
+
+        <template v-else>
+            <div class="text-slate-600 dark:text-slate-300 text-[0.95rem] font-semibold">
+                <span>{{ filteredOpportunities.length }} oportunidades abertas</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+                <OpportunityCard
+                    v-for="opportunity in filteredOpportunities"
+                    :key="opportunity.id"
+                    :opportunity="opportunity"
+                    :format-tipo="formatTipo"
+                    :format-prazo="formatPrazo"
+                    class="h-full"
+                />
+            </div>
+        </template>
     </section>
 </template>

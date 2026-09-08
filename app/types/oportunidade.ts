@@ -11,6 +11,7 @@ export interface Oportunidade {
   comoParticipar: string[]
   certificado: boolean
   requisitos: string[]
+  vagas: number
   prazoInscricao: string
   tipo: 'bolsa' | 'voluntariado'
 }
@@ -22,8 +23,15 @@ export interface OportunidadeCard extends Oportunidade {
 }
 
 export type OportunidadeFiltro = 'todos' | Oportunidade['tipo']
+export type OportunidadeCertificadoFiltro = 'todos' | 'com' | 'sem'
+export type OportunidadePrazoFiltro = 'todos' | '7' | '15' | '30'
 
 export interface OpcaoFiltroOportunidade {
   label: string
   value: OportunidadeFiltro
+}
+
+export interface OpcaoFiltroGenerica<T extends string> {
+  label: string
+  value: T
 }

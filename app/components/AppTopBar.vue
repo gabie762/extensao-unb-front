@@ -42,21 +42,27 @@ const links = [
                     <UAvatar src="/images/default-avatar.svg" alt="Perfil do usuário" class="w-10 h-10" />
                 </UButton>
 
-                <UButton
-                    variant="ghost"
-                    color="neutral"
-                    size="xl"
-                    :icon="colorMode.value === 'dark' ? 'i-heroicons-sun' : 'i-heroicons-moon'"
-                    :aria-label="colorMode.value === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
-                    @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
-                />
+                <ClientOnly>
+                    <UButton
+                        variant="ghost"
+                        color="neutral"
+                        size="xl"
+                        :icon="colorMode.value === 'dark' ? 'i-heroicons-sun' : 'i-heroicons-moon'"
+                        :aria-label="colorMode.value === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
+                        class="text-white"
+                        @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+                    />
+                    <template #fallback>
+                        <UButton variant="ghost" color="neutral" size="xl" icon="i-heroicons-moon" class="text-white" aria-label="Alternar modo" />
+                    </template>
+                </ClientOnly>
 
                 <UButton
                     variant="ghost"
                     color="neutral"
                     size="xl"
                     icon="i-heroicons-bars-3"
-                    class="md:hidden min-h-[3.5rem] min-w-[3.5rem]"
+                    class="md:hidden min-h-[3.5rem] min-w-[3.5rem] text-white"
                     :aria-label="isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'"
                     @click="isMobileMenuOpen = !isMobileMenuOpen"
                 />

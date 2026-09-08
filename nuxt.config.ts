@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      apiBase: '' // NUXT_PUBLIC_API_BASE env var will override this
+    }
+  },
   app: {
     head: {
       link: [

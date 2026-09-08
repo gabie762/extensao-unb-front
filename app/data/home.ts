@@ -1,10 +1,8 @@
-import type { AreaConhecimento } from '~/types/projeto'
-
 export const projects = [
   {
     id: 1,
     title: 'Plataforma de monitoria com IA para disciplinas iniciais',
-    area: 'Ciências Exatas e da Terra' as AreaConhecimento,
+    area: 'Ciências Exatas e da Terra',
     unidadeResponsavel: 'Departamento de Ciência da Computação (CIC)',
     description:
       'Projeto para apoiar estudantes em Cálculo e Programação com trilhas de estudo, revisão automática e acompanhamento de progresso.',
@@ -15,7 +13,7 @@ export const projects = [
   {
     id: 2,
     title: 'Mapa de oportunidades acadêmicas e extensão universitária',
-    area: 'Ciências Sociais Aplicadas' as AreaConhecimento,
+    area: 'Ciências Sociais Aplicadas',
     unidadeResponsavel: 'Faculdade de Administração, Contabilidade, Economia e Gestão Pública (FACE)',
     description:
       'Centraliza bolsas, extensão, eventos e iniciativas estudantis para facilitar o acesso dos alunos a projetos ativos no campus.',
@@ -26,7 +24,7 @@ export const projects = [
   {
     id: 3,
     title: 'Laboratório de UX para serviços digitais da universidade',
-    area: 'Linguística, Letras e Artes' as AreaConhecimento,
+    area: 'Linguística, Letras e Artes',
     unidadeResponsavel: 'Faculdade de Comunicação (FAC)',
     description:
       'Grupo multidisciplinar focado em melhorar sistemas internos da universidade com pesquisa com usuários, prototipação e validação.',
