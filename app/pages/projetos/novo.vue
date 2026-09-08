@@ -26,6 +26,7 @@ async function handleSubmit(payload: Record<string, unknown>) {
       body: { ...payload, coordenador: user.value.id }
     })
 
+    await refreshNuxtData()
     await navigateTo(`/projetos/${projetoCriado.id}`)
   } catch (err: any) {
     const status = err?.status ?? err?.response?.status

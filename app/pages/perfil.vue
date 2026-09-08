@@ -11,11 +11,29 @@ const roleLabel: Record<string, string> = {
 
 const podeGerenciarProjetos = computed(() => ['ROLE_PROFESSOR', 'ROLE_ADMIN'].includes(user.value?.role || ''))
 const { pending: projetosPending, meusProjetos } = useProjetos()
+const apiFetch = useApi()
 
 const statusConfig = {
   aberto: { label: 'Aberto', color: 'success' as const },
   em_andamento: { label: 'Em andamento', color: 'primary' as const },
   encerrado: { label: 'Encerrado', color: 'neutral' as const }
+}
+
+const excluindoId = ref<string | null>(null)
+
+async function excluirProjeto(id: string, titulo: string) {
+  if (!confirm(`Tem certeza que deseja excluir "${titulo}"? Essa ação não pode ser desfeita.`)) return
+
+  excluindoId.value = id
+  try {
+    await apiFetch(`/projetos/${id}`, { method: 'DELETE' })
+    await refreshNuxtData()
+  } catch (err) {
+    console.error(err)
+    alert('Erro ao excluir o projeto. Tente novamente.')
+  } finally {
+    excluindoId.value = null
+  }
 }
 
 const inicial = computed(() => user.value?.nome?.charAt(0).toUpperCase() ?? '?')
@@ -170,12 +188,23 @@ function formatTipo(tipo: 'bolsa' | 'voluntariado') {
                   <span>•</span>
                   <span>{{ projeto.vagas }} vagas</span>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-3 gap-2">
                   <UButton :to="`/projetos/${projeto.id}`" color="neutral" variant="soft" size="sm" class="justify-center">
-                    Ver detalhes
+                    Ver
                   </UButton>
                   <UButton :to="`/projetos/${projeto.id}/editar`" color="primary" variant="soft" size="sm" icon="i-heroicons-pencil-square" class="justify-center">
                     Editar
+                  </UButton>
+                  <UButton
+                    color="error"
+                    variant="soft"
+                    size="sm"
+                    icon="i-heroicons-trash"
+                    class="justify-center"
+                    :loading="excluindoId === projeto.id"
+                    @click="excluirProjeto(projeto.id, projeto.titulo)"
+                  >
+                    Excluir
                   </UButton>
                 </div>
               </div>
