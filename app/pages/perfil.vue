@@ -160,7 +160,7 @@ function formatTipo(tipo: 'bolsa' | 'voluntariado') {
         <section v-if="podeGerenciarProjetos" class="grid gap-3">
           <div class="flex items-center justify-between gap-3">
             <h3 class="m-0 text-slate-900 dark:text-white text-xl font-bold">Meus projetos</h3>
-            <UButton to="/projetos/novo" color="primary" variant="soft" size="sm" icon="i-heroicons-plus">
+            <UButton :to="{ path: '/projetos/novo', query: { from: 'perfil' } }" color="primary" variant="soft" size="sm" icon="i-heroicons-plus">
               Nova ação
             </UButton>
           </div>
@@ -189,10 +189,10 @@ function formatTipo(tipo: 'bolsa' | 'voluntariado') {
                   <span>{{ projeto.vagas }} vagas</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2">
-                  <UButton :to="`/projetos/${projeto.id}`" color="neutral" variant="soft" size="sm" class="justify-center">
+                  <UButton :to="{ path: `/projetos/${projeto.id}`, query: { from: 'perfil' } }" color="neutral" variant="soft" size="sm" class="justify-center">
                     Ver
                   </UButton>
-                  <UButton :to="`/projetos/${projeto.id}/editar`" color="primary" variant="soft" size="sm" icon="i-heroicons-pencil-square" class="justify-center">
+                  <UButton :to="{ path: `/projetos/${projeto.id}/editar`, query: { from: 'perfil' } }" color="primary" variant="soft" size="sm" icon="i-heroicons-pencil-square" class="justify-center">
                     Editar
                   </UButton>
                   <UButton
@@ -214,7 +214,7 @@ function formatTipo(tipo: 'bolsa' | 'voluntariado') {
           <div v-else class="flex flex-col items-center gap-3 py-10 text-center bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
             <UIcon name="i-heroicons-briefcase" class="w-10 h-10 text-slate-300 dark:text-slate-600" />
             <p class="m-0 text-slate-500 dark:text-slate-400 font-medium">Você ainda não cadastrou nenhuma ação de extensão.</p>
-            <UButton to="/projetos/novo" color="primary" variant="soft" size="sm">
+            <UButton :to="{ path: '/projetos/novo', query: { from: 'perfil' } }" color="primary" variant="soft" size="sm">
               Cadastrar ação
             </UButton>
           </div>

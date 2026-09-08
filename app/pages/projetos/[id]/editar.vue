@@ -23,6 +23,11 @@ const podeEditar = computed(() => {
 const loading = ref(false)
 const submitError = ref('')
 
+const voltarPara = computed(() => {
+  if (route.query.from === 'perfil') return '/perfil'
+  return { path: `/projetos/${route.params.id}`, query: route.query.from ? { from: String(route.query.from) } : {} }
+})
+
 async function handleSubmit(payload: Record<string, unknown>) {
   if (!projeto.value) return
 
@@ -35,7 +40,7 @@ async function handleSubmit(payload: Record<string, unknown>) {
     })
 
     await refreshNuxtData()
-    await navigateTo(`/projetos/${projeto.value.id}`)
+    await navigateTo(voltarPara.value)
   } catch (err: any) {
     const status = err?.status ?? err?.response?.status
     if (status === 400) {
@@ -73,8 +78,8 @@ async function handleSubmit(payload: Record<string, unknown>) {
 
   <section v-else class="flex flex-col gap-6 max-w-3xl mx-auto">
     <header class="grid gap-3">
-      <NuxtLink :to="`/projetos/${projeto.id}`" class="text-sm font-semibold text-primary hover:underline w-fit">
-        ← Voltar para o projeto
+      <NuxtLink :to="voltarPara" class="text-sm font-semibold text-primary hover:underline w-fit">
+        {{ route.query.from === 'perfil' ? '← Voltar para o perfil' : '← Voltar para o projeto' }}
       </NuxtLink>
       <p class="m-0 text-blue-600 text-sm font-bold tracking-wider uppercase">Editar ação</p>
       <h1 class="m-0 text-slate-900 dark:text-white text-[clamp(2rem,3vw,2.5rem)] font-bold tracking-tight">
@@ -88,6 +93,7 @@ async function handleSubmit(payload: Record<string, unknown>) {
     <ProjetoForm
       :projeto="projeto"
       submit-label="Salvar alterações"
+      :cancel-to="voltarPara"
       :loading="loading"
       :error="submitError"
       @submit="handleSubmit"

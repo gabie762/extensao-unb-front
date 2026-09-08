@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { Projeto } from '~/types/projeto'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   projeto?: Projeto | null
   loading?: boolean
   error?: string
   submitLabel: string
-}>()
+  cancelTo?: string | Record<string, unknown>
+}>(), {
+  cancelTo: '/projetos'
+})
 
 const emit = defineEmits<{
   submit: [payload: Record<string, unknown>]
@@ -187,7 +190,7 @@ function handleSubmit() {
       </div>
 
       <div class="flex justify-end gap-3">
-        <UButton to="/projetos" color="neutral" variant="ghost" size="xl">
+        <UButton :to="cancelTo" color="neutral" variant="ghost" size="xl">
           Cancelar
         </UButton>
         <UButton type="submit" size="xl" :loading="loading" class="font-bold">

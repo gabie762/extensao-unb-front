@@ -32,6 +32,11 @@ const form = reactive({
 const loading = ref(false)
 const error = ref('')
 
+const voltaAoProjeto = computed(() => ({
+  path: `/projetos/${route.params.id}`,
+  query: route.query.from ? { from: String(route.query.from) } : {}
+}))
+
 function paraIso(valorLocal: string) {
   if (!valorLocal) return undefined
   const data = new Date(valorLocal)
@@ -65,7 +70,7 @@ async function handleSubmit() {
     })
 
     await refreshNuxtData()
-    await navigateTo(`/projetos/${projeto.value.id}`)
+    await navigateTo(voltaAoProjeto.value)
   } catch (err: any) {
     const status = err?.status ?? err?.response?.status
     error.value = status === 400
@@ -91,12 +96,12 @@ async function handleSubmit() {
   <div v-else-if="!podeGerenciar" class="flex flex-col gap-4 py-8">
     <h1 class="m-0 text-2xl font-bold text-slate-900 dark:text-white">Acesso não permitido</h1>
     <p class="m-0 text-slate-600 dark:text-slate-300">Você não tem permissão para criar eventos neste projeto.</p>
-    <UButton :to="`/projetos/${projeto.id}`" color="primary" variant="solid" class="w-fit">Voltar para o projeto</UButton>
+    <UButton :to="voltaAoProjeto" color="primary" variant="solid" class="w-fit">Voltar para o projeto</UButton>
   </div>
 
   <section v-else class="flex flex-col gap-6 max-w-2xl mx-auto">
     <header class="grid gap-3">
-      <NuxtLink :to="`/projetos/${projeto.id}`" class="text-sm font-semibold text-primary hover:underline w-fit">
+      <NuxtLink :to="voltaAoProjeto" class="text-sm font-semibold text-primary hover:underline w-fit">
         ← Voltar para o projeto
       </NuxtLink>
       <p class="m-0 text-blue-600 text-sm font-bold tracking-wider uppercase">Novo evento</p>
@@ -139,7 +144,7 @@ async function handleSubmit() {
         </div>
 
         <div class="flex justify-end gap-3">
-          <UButton :to="`/projetos/${projeto.id}`" color="neutral" variant="ghost" size="xl">Cancelar</UButton>
+          <UButton :to="voltaAoProjeto" color="neutral" variant="ghost" size="xl">Cancelar</UButton>
           <UButton type="submit" size="xl" :loading="loading" class="font-bold">Criar evento</UButton>
         </div>
       </form>

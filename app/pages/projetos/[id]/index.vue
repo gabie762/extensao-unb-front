@@ -44,7 +44,7 @@ async function excluirProjeto() {
   try {
     await apiFetch(`/projetos/${projeto.value.id}`, { method: 'DELETE' })
     await refreshNuxtData()
-    await navigateTo('/projetos')
+    await navigateTo(backTo.value)
   } catch (err) {
     console.error(err)
     alert('Erro ao excluir o projeto. Tente novamente.')
@@ -69,14 +69,18 @@ function formatarDataHora(valor: string | undefined | null) {
 const backTo = computed(() => {
   if (route.query.from === 'feed') return '/'
   if (route.query.from === 'oportunidades') return '/oportunidades'
+  if (route.query.from === 'perfil') return '/perfil'
   return '/projetos'
 })
 
 const backLabel = computed(() => {
   if (route.query.from === 'feed') return '← Voltar para o início'
   if (route.query.from === 'oportunidades') return '← Voltar para oportunidades'
+  if (route.query.from === 'perfil') return '← Voltar para o perfil'
   return '← Voltar para projetos'
 })
+
+const origemQuery = computed(() => (route.query.from ? { from: String(route.query.from) } : {}))
 
 function formatarData(data: string | undefined | null) {
   if (!data) return 'Data não informada'
@@ -113,7 +117,7 @@ function formatarData(data: string | undefined | null) {
 
       <div v-if="podeEditar" class="flex items-center gap-2 shrink-0">
         <UButton
-          :to="`/projetos/${projeto.id}/editar`"
+          :to="{ path: `/projetos/${projeto.id}/editar`, query: origemQuery }"
           color="neutral"
           variant="outline"
           size="sm"
@@ -268,7 +272,7 @@ function formatarData(data: string | undefined | null) {
             </div>
             <UButton
               v-if="podeEditar"
-              :to="`/projetos/${projeto.id}/oportunidades/novo`"
+              :to="{ path: `/projetos/${projeto.id}/oportunidades/novo`, query: origemQuery }"
               color="primary"
               variant="soft"
               size="sm"
@@ -307,7 +311,7 @@ function formatarData(data: string | undefined | null) {
             </div>
             <UButton
               v-if="podeEditar"
-              :to="`/projetos/${projeto.id}/eventos/novo`"
+              :to="{ path: `/projetos/${projeto.id}/eventos/novo`, query: origemQuery }"
               color="primary"
               variant="soft"
               size="sm"
