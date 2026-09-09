@@ -22,6 +22,12 @@ export const useAuth = () => {
     return 'ROLE_STUDENT'
   }
 
+  const definirSessao = async (data: LoginResponse) => {
+    token.value = data.token
+    await fetchCurrentUser()
+    return data
+  }
+
   const login = async (credentials: { email: string; senha: string }) => {
     try {
       const config = useRuntimeConfig()
@@ -31,16 +37,29 @@ export const useAuth = () => {
         body: credentials
       })
 
-      token.value = data.token
-      await fetchCurrentUser()
-
-      return data
+      return await definirSessao(data)
     } catch (error) {
       console.error('Login error:', error)
       throw error
     }
   }
-  
+
+  const verificarEmail = async (verificationToken: string) => {
+    try {
+      const config = useRuntimeConfig()
+      const data = await $fetch<LoginResponse>('/auth/verificar-email', {
+        baseURL: config.public.apiBase,
+        method: 'POST',
+        body: { token: verificationToken }
+      })
+
+      return await definirSessao(data)
+    } catch (error) {
+      console.error('Email verification error:', error)
+      throw error
+    }
+  }
+
   const logout = () => {
     token.value = null
     user.value = null
@@ -84,6 +103,7 @@ export const useAuth = () => {
     user,
     isAuthenticated,
     login,
+    verificarEmail,
     logout,
     fetchCurrentUser
   }
