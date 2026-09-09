@@ -53,15 +53,6 @@ const backLabel = computed(() => (route.query.from === 'perfil' ? '← Voltar pa
         <UBadge color="neutral" variant="soft" class="font-semibold px-3 py-1">
           {{ oportunidade.local }}
         </UBadge>
-        <UBadge
-          v-for="tag in (oportunidade.projeto?.tags || [])"
-          :key="tag"
-          color="primary"
-          variant="soft"
-          class="font-semibold px-3 py-1"
-        >
-          {{ tag }}
-        </UBadge>
       </div>
     </header>
 

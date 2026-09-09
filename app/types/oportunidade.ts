@@ -14,6 +14,7 @@ export interface Oportunidade {
   vagas: number
   prazoInscricao: string
   tipo: 'bolsa' | 'voluntariado'
+  status?: string
 }
 
 export interface OportunidadeCard extends Oportunidade {

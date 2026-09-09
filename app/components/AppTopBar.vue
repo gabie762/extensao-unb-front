@@ -1,12 +1,15 @@
 <script setup lang="ts">
 const isMobileMenuOpen = ref(false)
 const colorMode = useColorMode()
+const { user } = useAuth()
 
 const links = [
   { label: 'Início', to: '/' },
   { label: 'Projetos', to: '/projetos' },
   { label: 'Oportunidades', to: '/oportunidades' }
 ]
+
+const podeCadastrar = computed(() => ['ROLE_PROFESSOR', 'ROLE_ADMIN'].includes(user.value?.role || ''))
 </script>
 
 <template>
@@ -32,6 +35,18 @@ const links = [
             </nav>
 
             <div class="flex items-center gap-3">
+                <UButton
+                    v-if="podeCadastrar"
+                    to="/projetos/novo"
+                    variant="solid"
+                    color="primary"
+                    size="xl"
+                    icon="i-heroicons-plus"
+                    class="hidden md:inline-flex font-bold"
+                >
+                    Cadastrar ação
+                </UButton>
+
                 <UButton
                     to="/perfil"
                     variant="ghost"
@@ -83,6 +98,20 @@ const links = [
                     @click="isMobileMenuOpen = false"
                 >
                     {{ link.label }}
+                </UButton>
+
+                <UButton
+                    v-if="podeCadastrar"
+                    to="/projetos/novo"
+                    variant="solid"
+                    color="primary"
+                    size="xl"
+                    icon="i-heroicons-plus"
+                    block
+                    class="justify-start font-bold"
+                    @click="isMobileMenuOpen = false"
+                >
+                    Cadastrar ação
                 </UButton>
 
                 <UButton

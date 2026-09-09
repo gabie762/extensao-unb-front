@@ -10,7 +10,6 @@ export interface Projeto {
   descricao?: string
   coordenador: Usuario
   cronograma: string
-  tags: string[]
   status: 'aberto' | 'em_andamento' | 'encerrado'
   vagas: number
   proximoEvento?: ProximoEvento
