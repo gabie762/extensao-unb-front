@@ -50,17 +50,6 @@ function formatarCronograma(valor: string) {
         <div class="flex flex-col gap-3 flex-1">
           <h2 class="m-0 text-slate-900 dark:text-white text-[1.2rem] font-bold leading-snug line-clamp-2 min-h-[3.25rem]">{{ project.titulo }}</h2>
           <p class="m-0 text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 min-h-[4.5rem]">{{ project.descricao || project.resumo }}</p>
-          <div class="flex flex-wrap gap-2 mt-1">
-            <UBadge
-              v-for="tag in project.tags"
-              :key="tag"
-              color="neutral"
-              variant="soft"
-              class="font-medium"
-            >
-              {{ tag }}
-            </UBadge>
-          </div>
         </div>
 
         <template #footer>

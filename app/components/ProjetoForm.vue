@@ -22,7 +22,6 @@ const form = reactive({
   resumo: props.projeto?.resumo ?? '',
   cronograma: props.projeto?.cronograma ?? '',
   vagas: props.projeto?.vagas,
-  tagsInput: props.projeto?.tags?.join(', ') ?? '',
   status: props.projeto?.status ?? 'aberto',
   proximoEventoTitulo: props.projeto?.proximoEvento?.titulo ?? '',
   proximoEventoData: props.projeto?.proximoEvento?.dataInicio ?? ''
@@ -44,18 +43,12 @@ function handleSubmit() {
     return
   }
 
-  const tags = form.tagsInput
-    .split(',')
-    .map((tag) => tag.trim())
-    .filter(Boolean)
-
   const payload: Record<string, unknown> = {
     titulo: form.titulo,
     area: form.area,
     unidadeResponsavel: form.unidadeResponsavel,
     resumo: form.resumo,
     cronograma: form.cronograma || undefined,
-    tags: tags.length ? tags : undefined,
     vagas: form.vagas,
     status: form.status
   }
@@ -134,15 +127,6 @@ function handleSubmit() {
           />
         </UFormField>
       </div>
-
-      <UFormField label="Tags" hint="Separe por vírgula" class="w-full">
-        <UInput
-          v-model="form.tagsInput"
-          placeholder="Ex: pesquisa, comunidade, tecnologia"
-          size="xl"
-          class="w-full"
-        />
-      </UFormField>
 
       <UFormField v-if="projeto" label="Status" required class="w-full">
         <div class="grid grid-cols-3 gap-2">

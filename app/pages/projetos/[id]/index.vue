@@ -201,15 +201,6 @@ function formatarData(data: string | undefined | null) {
           <UIcon name="i-heroicons-building-office" class="w-3.5 h-3.5 mr-1" />
           {{ projeto.unidadeResponsavel }}
         </UBadge>
-        <UBadge
-          v-for="tag in projeto.tags"
-          :key="tag"
-          color="neutral"
-          variant="soft"
-          class="font-medium px-3 py-1"
-        >
-          {{ tag }}
-        </UBadge>
       </div>
     </header>
 

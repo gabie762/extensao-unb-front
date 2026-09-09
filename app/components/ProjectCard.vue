@@ -68,18 +68,6 @@ const statusConfig = {
           </div>
         </div>
       </div>
-
-      <div v-if="projeto.tags?.length" class="flex flex-wrap gap-1.5">
-        <UBadge
-          v-for="tag in projeto.tags"
-          :key="tag"
-          color="neutral"
-          variant="soft"
-          class="text-xs font-medium"
-        >
-          {{ tag }}
-        </UBadge>
-      </div>
     </div>
 
     <template #footer>
