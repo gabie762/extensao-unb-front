@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
-
 const form = reactive({
   nome: '',
   email: '',
@@ -39,7 +37,7 @@ async function handleCadastro() {
   loading.value = true
   try {
     await $fetch('/auth/cadastro', {
-      baseURL: config.public.apiBase,
+      baseURL: useApiBase(),
       method: 'POST',
       body: {
         nome: form.nome,

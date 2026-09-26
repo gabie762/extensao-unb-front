@@ -1,0 +1,10 @@
+node_modules/
+.nuxt/
+.output/
+.nitro/
+.cache/
+.git/
+.env
+*.log
+.vscode/
+CLAUDE.md
