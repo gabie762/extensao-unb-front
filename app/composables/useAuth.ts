@@ -30,9 +30,8 @@ export const useAuth = () => {
 
   const login = async (credentials: { email: string; senha: string }) => {
     try {
-      const config = useRuntimeConfig()
       const data = await $fetch<LoginResponse>('/auth/login', {
-        baseURL: config.public.apiBase,
+        baseURL: useApiBase(),
         method: 'POST',
         body: credentials
       })
@@ -46,9 +45,8 @@ export const useAuth = () => {
 
   const verificarEmail = async (verificationToken: string) => {
     try {
-      const config = useRuntimeConfig()
       const data = await $fetch<LoginResponse>('/auth/verificar-email', {
-        baseURL: config.public.apiBase,
+        baseURL: useApiBase(),
         method: 'POST',
         body: { token: verificationToken }
       })
@@ -71,9 +69,8 @@ export const useAuth = () => {
     if (!token.value) return
 
     try {
-      const config = useRuntimeConfig()
       const dto = await $fetch<any>('/auth/me', {
-        baseURL: config.public.apiBase,
+        baseURL: useApiBase(),
         headers: {
           Authorization: `Bearer ${token.value}`
         }

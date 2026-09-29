@@ -8,9 +8,8 @@ import type {
 import { filterOptions as opcoesFiltro } from '~/data/oportunidades'
 
 export function useOportunidades() {
-  const config = useRuntimeConfig()
   const { data: oportunidades, refresh, pending, error } = useFetch<OportunidadeCard[]>('/oportunidades', {
-    baseURL: config.public.apiBase
+    baseURL: useApiBase()
   })
 
   const termoBusca = ref('')

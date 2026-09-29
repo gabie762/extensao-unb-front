@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
-
 const email = ref('')
 const loading = ref(false)
 const enviado = ref(false)
@@ -16,7 +14,7 @@ async function handleReenvio() {
   error.value = ''
   try {
     await $fetch('/auth/reenviar-verificacao', {
-      baseURL: config.public.apiBase,
+      baseURL: useApiBase(),
       method: 'POST',
       body: { email: email.value }
     })
